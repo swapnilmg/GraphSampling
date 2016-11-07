@@ -20,7 +20,7 @@ public class RankDegreeAlgorithm {
 
 		for(int i=0; i<seed; ){
 			int v = (int) (Math.random()*vertices.size());
-			System.out.println("V"+v+" = "+vertices.contains());
+			System.out.println("V"+v+" = "+vertices);
 			i++;
 		}
 	}

@@ -143,9 +143,9 @@ public class MyGraph extends JPanel {
 	 * 
 	 * @param v
 	 */
-	public void addVertex(Vertex v) {
+	public void addVertex(String k, Vertex v) {
 		mainGraph.addVertex(v);
-		vertexmaps.put(vertexmaps.size(), v);
+		vertexmaps.put(Integer.parseInt(k), v);
 	}
 
 	/**
@@ -170,53 +170,22 @@ public class MyGraph extends JPanel {
 	/**
 	 * @param args
 	 */
-	public static void createRandom(int numVertices, int numEdges) {
+	public static void createRandom(SimpleGraph G) {
 		// create a test graph
 		MyGraph JCV = new MyGraph();
-		for (int i = 0; i < numVertices; i++) {
-			JCV.addVertex(new SparseVertex());
+		HashMap<String, String> vertices = G.getVertices();
+		for (String v : vertices.keySet()) {
+			JCV.addVertex(v, new SparseVertex());
 		}
-		/*HashMap<String, String> seenEdges = new HashMap<String, String>();
-		for (int i = 0; i < numEdges; ) {
-			int a = (int) (Math.random() * numVertices);
-			int b = (int) (Math.random() * numVertices);
-			// need to keep track of seen edges
-			if (!seenEdges.containsKey(a + " " + b)) {
-				JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(a), JCV
-						.getVertex(b)));
-				seenEdges.put(a + " " + b, "");
-				seenEdges.put(b + " " + a, "");
-				i++;
-			}
-		}*/
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(0),JCV.getVertex(1)));
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(0),JCV.getVertex(2)));
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(0),JCV.getVertex(3)));
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(1),JCV.getVertex(3)));
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(1),JCV.getVertex(4)));
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(2),JCV.getVertex(3)));
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(2),JCV.getVertex(5)));
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(2),JCV.getVertex(6)));
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(3),JCV.getVertex(4)));
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(3),JCV.getVertex(5)));
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(3),JCV.getVertex(6)));
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(4),JCV.getVertex(6)));
-		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(5),JCV.getVertex(6)));
+		
+		HashMap<String, String> edges = G.getEdges();
+		for(String edge : edges.keySet()){
+			//System.out.println("Receive Edge: "+edge);
+			String[] v = edge.split("-");
+			int v1 = Integer.parseInt(v[0]);
+			int v2 = Integer.parseInt(v[1]);
+			JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(v1), JCV.getVertex(v2)));
+		}
 		JCV.showSomething();
-		JCV.RankDegree();
 	}
-	
-	private void RankDegree() {
-		RankDegreeAlgorithm.sample(mainGraph, 3, 1, 3);
-		
-	}
-
-	public static void createFromFile(File file){
-		
-	}
-	
-	public static void main(String[] argc){
-		createRandom(7, 8);
-	}
-
 }

@@ -20,11 +20,18 @@ public class SimpleGraph {
 	
 	public void addVertex(int i){
 		vertices.put(""+i, "");
+		this.calculate();
 	}
 	
 	public void addEdge(int a, int b){
 		edges.put(a+"-"+b, "");
 		//edges.put(b+" "+a, "");
+		this.calculate();
+	}
+	
+	public void removeEdge(int a, int b){
+		edges.remove(a+"-"+b);
+		this.calculate();
 	}
 	
 	public HashMap<String, String> getVertices(){
@@ -57,30 +64,33 @@ public class SimpleGraph {
 	
 	public static void main(String[] argc){
 		SimpleGraph G = new SimpleGraph();
+		G.addVertex(0);
 		G.addVertex(1);
 		G.addVertex(2);
 		G.addVertex(3);
 		G.addVertex(4);
 		G.addVertex(5);
 		G.addVertex(6);
-		G.addVertex(7);
-		G.addEdge(1, 2);
+		G.addEdge(0, 1);
+		G.addEdge(0, 2);
+		G.addEdge(0, 3);
 		G.addEdge(1, 3);
 		G.addEdge(1, 4);
-		G.addEdge(2, 4);
+		G.addEdge(2, 3);
 		G.addEdge(2, 5);
+		G.addEdge(2, 6);
 		G.addEdge(3, 4);
+		G.addEdge(3, 5);
 		G.addEdge(3, 6);
-		G.addEdge(3, 7);
-		G.addEdge(4, 5);
 		G.addEdge(4, 6);
-		G.addEdge(4, 7);
-		G.addEdge(5, 7);
-		G.addEdge(6, 7);
-		G.calculate();
+		G.addEdge(5, 6);
+		MyGraph.createRandom(G);
 		System.out.println("Vertices = "+G.getVertices().keySet());
 		System.out.println("Edges = "+G.getEdges().keySet());
-		System.out.println("Friends = "+G.getFriends());
-		RankDegree.sample(G, 2, 0.1, 1);
+		int seed = 2;
+		double top = 0.1;
+		int sampleSize = 5;
+		System.out.println("Finding sample of size "+sampleSize+" with "+seed+" seeds and "+top+" influence");
+		RankDegree.sample(G, seed, top, sampleSize);
 	}
 }
