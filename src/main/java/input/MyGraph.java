@@ -4,6 +4,7 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import algorithms.RankDegreeAlgorithm;
 import edu.uci.ics.jung.graph.Edge;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.Vertex;
@@ -20,10 +22,14 @@ import edu.uci.ics.jung.graph.decorators.DefaultToolTipFunction;
 import edu.uci.ics.jung.graph.decorators.EdgeShape;
 import edu.uci.ics.jung.graph.decorators.EllipseVertexShapeFunction;
 import edu.uci.ics.jung.graph.decorators.PickableEdgePaintFunction;
+import edu.uci.ics.jung.graph.decorators.ToStringLabeller;
+import edu.uci.ics.jung.graph.decorators.VertexFontFunction;
 import edu.uci.ics.jung.graph.impl.SparseVertex;
 import edu.uci.ics.jung.graph.impl.UndirectedSparseEdge;
 import edu.uci.ics.jung.graph.impl.UndirectedSparseGraph;
 import edu.uci.ics.jung.utils.Pair;
+import edu.uci.ics.jung.visualization.FRLayout;
+import edu.uci.ics.jung.visualization.ISOMLayout;
 import edu.uci.ics.jung.visualization.Layout;
 import edu.uci.ics.jung.visualization.MultiPickedState;
 import edu.uci.ics.jung.visualization.PluggableRenderer;
@@ -56,7 +62,7 @@ public class MyGraph extends JPanel {
 
 		mainRender = new PluggableRenderer();
 		/* how nodes will be places....change this */
-		mainLayout = new SpringLayout(mainGraph);//CircleLayout(mainGraph);// SpringLayout(mainGraph);//
+		mainLayout = new FRLayout(mainGraph);//CircleLayout(mainGraph);// SpringLayout(mainGraph);//
 
 		/* single DS to help you work with layouts... */
 		VV = new VisualizationViewer(mainLayout, mainRender, new Dimension(500,
@@ -85,18 +91,15 @@ public class MyGraph extends JPanel {
 		VV.setPickedState(new MultiPickedState());
 
 		// allow edges to light up
-		mainRender.setEdgePaintFunction(new PickableEdgePaintFunction(VV
-				.getPickedState(), Color.black, Color.red));
+		mainRender.setEdgePaintFunction(new PickableEdgePaintFunction(VV.getPickedState(), Color.black, Color.red));
 		mainRender.setVertexShapeFunction(new EllipseVertexShapeFunction());
-		mainRender.setVertexPaintFunction(new ConstantVertexPaintFunction(
-				Color.red));
-
+		mainRender.setVertexPaintFunction(new ConstantVertexPaintFunction(Color.red));
+		mainRender.setVertexLabelCentering(true);
 		// lets color the edges appropriatly
 		mainRender.setEdgeShapeFunction(new EdgeShape.Line() {
 
 		});
-		mainRender.setEdgeStrokeFunction(new ConstantEdgeStrokeFunction(
-				new BasicStroke(0.5f)));
+		mainRender.setEdgeStrokeFunction(new ConstantEdgeStrokeFunction(new BasicStroke(0.5f)));
 		add(VV);
 		VV.init();
 
@@ -173,7 +176,7 @@ public class MyGraph extends JPanel {
 		for (int i = 0; i < numVertices; i++) {
 			JCV.addVertex(new SparseVertex());
 		}
-		HashMap<String, String> seenEdges = new HashMap<String, String>();
+		/*HashMap<String, String> seenEdges = new HashMap<String, String>();
 		for (int i = 0; i < numEdges; ) {
 			int a = (int) (Math.random() * numVertices);
 			int b = (int) (Math.random() * numVertices);
@@ -185,10 +188,29 @@ public class MyGraph extends JPanel {
 				seenEdges.put(b + " " + a, "");
 				i++;
 			}
-		}
+		}*/
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(0),JCV.getVertex(1)));
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(0),JCV.getVertex(2)));
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(0),JCV.getVertex(3)));
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(1),JCV.getVertex(3)));
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(1),JCV.getVertex(4)));
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(2),JCV.getVertex(3)));
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(2),JCV.getVertex(5)));
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(2),JCV.getVertex(6)));
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(3),JCV.getVertex(4)));
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(3),JCV.getVertex(5)));
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(3),JCV.getVertex(6)));
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(4),JCV.getVertex(6)));
+		JCV.addEdge(new UndirectedSparseEdge(JCV.getVertex(5),JCV.getVertex(6)));
 		JCV.showSomething();
+		JCV.RankDegree();
 	}
 	
+	private void RankDegree() {
+		RankDegreeAlgorithm.sample(mainGraph, 3, 1, 3);
+		
+	}
+
 	public static void createFromFile(File file){
 		
 	}
