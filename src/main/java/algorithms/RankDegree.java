@@ -4,25 +4,27 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.SortedSet;
 import java.util.TreeMap;
 
 import input.MyGraph;
 import input.SimpleGraph;
 
 public class RankDegree {
-	public static void sample(SimpleGraph G, int seed, double d, int sampleSize){
-		HashMap<String, String> vertices = G.getVertices();
-		HashMap<String, String> edges = G.getEdges();
+	
+	private static HashMap<String, String> generateSeeds(SimpleGraph G, int seed){
 		HashMap<String, String> seedMap = new HashMap<String, String>();
 		for(int i=0; i<seed;){
-			int v = (int) (Math.random()*vertices.size());
+			int v = (int) (Math.random()*G.getVertices().size());
 			if(!(seedMap.containsKey(v))){
 				seedMap.put(""+v, "");
 				i++;
 			}
 		}
+		return seedMap;
+	}
+	public static void sample(SimpleGraph G, int seed, double d, int sampleSize){
+		HashMap<String, String> seedMap = new HashMap<String, String>();
+		seedMap = generateSeeds(G, seed);
 		
 		SimpleGraph sample = new SimpleGraph();
 		while(sample.getEdges().size()< sampleSize){
@@ -72,7 +74,7 @@ public class RankDegree {
 			    
 			    System.out.println("Selected Vertices = "+selectedFriends.keySet());
 			    for(String s : selectedFriends.keySet()){
-			    	if(edges.containsKey(i+"-"+s))
+			    	if(G.getEdges().containsKey(i+"-"+s))
 			    		selectedEdges.put(i+"-"+s, "");
 			    	else
 			    		selectedEdges.put(s+"-"+i, "");
@@ -91,6 +93,9 @@ public class RankDegree {
 				G.calculate();
 			}
 			seedMap = newSeedMap;
+			if(seedMap.isEmpty()){
+				seedMap = generateSeeds(G, seed);
+			}
 		}
 		
 		System.out.println("\nSampled Vertices = "+sample.getVertices().keySet());

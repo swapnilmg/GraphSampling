@@ -3,6 +3,7 @@ package input;
 import java.util.HashMap;
 
 import algorithms.RankDegree;
+import edu.uci.ics.jung.graph.impl.DirectedSparseEdge;
 
 public class SimpleGraph {
 	HashMap<String, String> vertices;
@@ -64,14 +65,27 @@ public class SimpleGraph {
 	
 	public static void main(String[] argc){
 		SimpleGraph G = new SimpleGraph();
-		G.addVertex(0);
+		for(int i=0; i<100; i++){
+			G.addVertex(i);
+		}
+		/*G.addVertex(0);
 		G.addVertex(1);
 		G.addVertex(2);
 		G.addVertex(3);
 		G.addVertex(4);
 		G.addVertex(5);
-		G.addVertex(6);
-		G.addEdge(0, 1);
+		G.addVertex(6);*/
+		HashMap<String, String> seenEdges = new HashMap<String, String>();
+		for (int i = 0; i < 80; i++) {
+			int a = (int) (Math.random() * 45);
+			int b = (int) (Math.random() * 90);
+			// need to keep track of seen edges
+			if (!seenEdges.containsKey(a + " " + b)) {
+				G.addEdge(a,b);
+				seenEdges.put(a+"-"+b, "");
+			}
+		}
+		/*G.addEdge(0, 1);
 		G.addEdge(0, 2);
 		G.addEdge(0, 3);
 		G.addEdge(1, 3);
@@ -83,13 +97,13 @@ public class SimpleGraph {
 		G.addEdge(3, 5);
 		G.addEdge(3, 6);
 		G.addEdge(4, 6);
-		G.addEdge(5, 6);
+		G.addEdge(5, 6);*/
 		MyGraph.createRandom(G);
 		System.out.println("Vertices = "+G.getVertices().keySet());
 		System.out.println("Edges = "+G.getEdges().keySet());
-		int seed = 2;
+		int seed = 4;
 		double top = 0.1;
-		int sampleSize = 5;
+		int sampleSize = 20;
 		System.out.println("Finding sample of size "+sampleSize+" with "+seed+" seeds and "+top+" influence");
 		RankDegree.sample(G, seed, top, sampleSize);
 	}
