@@ -5,16 +5,28 @@
 	<artifactId>graphSampling</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/net.sf.jung/jung-graph-impl <dependency> 
+			<groupId>jung</groupId> <artifactId>jung</artifactId> <version>1.7.6</version> 
+			</dependency> <dependency> <groupId>org.jgrapht</groupId> <artifactId>jgrapht-core</artifactId> 
+			<version>1.0.0</version> </dependency> -->
 		<!-- https://mvnrepository.com/artifact/net.sf.jung/jung-graph-impl -->
 		<dependency>
-			<groupId>jung</groupId>
-			<artifactId>jung</artifactId>
-			<version>1.7.6</version>
+			<groupId>net.sf.jung</groupId>
+			<artifactId>jung-graph-impl</artifactId>
+			<version>2.0.1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.sf.jung/jung-algorithms -->
 		<dependency>
-			<groupId>org.jgrapht</groupId>
-			<artifactId>jgrapht-core</artifactId>
-			<version>1.0.0</version>
+			<groupId>net.sf.jung</groupId>
+			<artifactId>jung-algorithms</artifactId>
+			<version>2.0.1</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/net.sf.jung/jung-visualization -->
+		<dependency>
+			<groupId>net.sf.jung</groupId>
+			<artifactId>jung-visualization</artifactId>
+			<version>2.0</version>
+		</dependency>
+
 	</dependencies>
 </project>

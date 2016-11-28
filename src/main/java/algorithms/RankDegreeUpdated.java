@@ -7,11 +7,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
+import analytics.ClusteringCoefficient;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
 import edu.uci.ics.jung.graph.util.EdgeType;
 
-public class RankDegree {
+public class RankDegreeUpdated {
 
 	private static HashMap<Integer, String> generateSeeds(Graph<Integer, String> G, int seed) {
 		HashMap<Integer, String> seedMap = new HashMap<Integer, String>();
@@ -25,15 +26,18 @@ public class RankDegree {
 		return seedMap;
 	}
 
-	public static Graph<Integer, String> sample(Graph<Integer, String> G, int seed, double d, int sampleSize) {
+	public static Graph<Integer, String> sample(Graph<Integer, String> G, int sampleSize) {
 		HashMap<Integer, String> seedMap = new HashMap<Integer, String>();
 
 		// Initialize seeds: {Seeds} ← select s nodes uniformly at random
-		seedMap = generateSeeds(G, seed);
+		seedMap = generateSeeds(G, 1);
 		// System.out.println("Initial Seeds: "+seedMap.keySet());
 
 		// Sample←∅
 		Graph<Integer, String> sample = new SparseMultigraph<Integer, String>();
+		double ccMain = 0.6055;//ClusteringCoefficient.calculate(G);
+		
+		double d=0.5;
 
 		// while|Sample|< x do
 		while (sample.getVertexCount() < sampleSize) {
@@ -110,13 +114,22 @@ public class RankDegree {
 				// G ← G \ {S elected Edges}
 				G.removeEdge(e);
 			}
+			
+			double ccSample = ClusteringCoefficient.calculate(sample);
+			if(ccSample>ccMain&&d<=0.9){
+				d=d+0.1;
+			}
+			if(ccSample<ccMain&&d>=0.2){
+				d=d-0.1;
+			}
 
 			// {Seeds} ← {New Seeds}
 			seedMap = newSeedMap;
 			if (seedMap.isEmpty()) {
-				seedMap = generateSeeds(G, seed);
+				seedMap = generateSeeds(G, 1);
 			}
 		}
+		//System.out.println("D = "+d);
 		return sample;
 	}
 }
