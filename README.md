@@ -26,3 +26,9 @@ Project has introduced three modifications to the Rank Degree algorithm using Gr
 1. Greedy Rank Degree
 2. Parallel Rank Degree
 3. Greedy Parallel Rank Degree
+
+## Major References
+1. E. Voudigari, N. Salamanos, T. Papageorgiou and E. J. Yannakoudakis, "Rank degree: An efficient algorithm for graph sampling," 2016 IEEE/ACM International Conference on Advances in Social Networks Analysis and Mining (ASONAM), San Francisco, CA, 2016, pp. 120-129.
+doi: 10.1109/ASONAM.2016.7752223
+keywords: {Algorithm design and analysis;Facebook;Fires;Sampling methods;Twitter},
+URL: http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=7752223&isnumber=7752180
