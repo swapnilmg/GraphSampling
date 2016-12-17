@@ -116,6 +116,7 @@ public class RankDegree {
 			if (seedMap.isEmpty()) {
 				seedMap = generateSeeds(G, seed);
 			}
+			System.out.println(".");
 		}
 		return sample;
 	}

@@ -115,7 +115,10 @@ public class RankDegreeUpdated {
 				G.removeEdge(e);
 			}
 			
+			long start = System.currentTimeMillis();
 			double ccSample = ClusteringCoefficient.calculate(sample);
+			long end = System.currentTimeMillis();
+			System.out.println(end-start);
 			if(ccSample>ccMain&&d<=0.9){
 				d=d+0.1;
 			}

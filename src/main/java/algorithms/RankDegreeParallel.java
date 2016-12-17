@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseMultigraph;
@@ -31,9 +33,12 @@ public class RankDegreeParallel {
 
 		// Sample←∅
 		Graph<Integer, String> sample = new SparseMultigraph<Integer, String>();
+		int i=0;
 
 		// while|Sample|< x do
 		while (sample.getVertexCount() < sampleSize) {
+			System.out.println("Starting round "+(++i)+" with "+seedMap.size()+" seeds");
+			
 			// {Selected Edges} ← ∅
 			HashMap<String, String> selectedEdges = new HashMap<String, String>();
 			// {New Seeds} ← ∅
@@ -43,29 +48,18 @@ public class RankDegreeParallel {
 			Iterator<Entry<Integer, String>> it = seedMap.entrySet().iterator();
 			int s = seedMap.size();
 			//System.out.println("SeedMap size = "+s);
-			if(s>0){
-				Thread[] threads = new Thread[s];
-				while (it.hasNext()) {
-					s--;
-					Map.Entry<Integer, String> pair = (Map.Entry<Integer, String>)it.next();
-					int w = pair.getKey();
-					System.out.println(w+","+s);
-					sample.addVertex(w);
-					//System.out.println("creating "+s);
-					threads[s] = new Propagator(G, d, w, sample, selectedEdges, newSeedMap);
-					threads[s].start();
-				}
-				for(int i = seedMap.size()-1; i>=0; i--){
-					//System.out.println(i);
-					try {
-						if(threads[i]!=null)
-							threads[i].join();
-					} catch (InterruptedException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-				}
+			ExecutorService executor = Executors.newFixedThreadPool(8);
+			
+			while (it.hasNext()) {
+				Map.Entry<Integer, String> pair = (Map.Entry<Integer, String>) it.next();
+				int w = pair.getKey();
+				sample.addVertex(w);
+				Runnable worker = new Propagator(G, d, w, sample, selectedEdges, newSeedMap);
+				executor.execute(worker);
 			}
+			executor.shutdown();
+	        while (!executor.isTerminated()) {
+	        }
 
 			// Sample <- Sample + {Selected Edges}
 			for (String e : selectedEdges.keySet()) {

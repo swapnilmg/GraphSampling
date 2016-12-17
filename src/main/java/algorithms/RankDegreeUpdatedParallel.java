@@ -38,7 +38,7 @@ public class RankDegreeUpdatedParallel {
 
 		// Sample←∅
 		Graph<Integer, String> sample = new SparseMultigraph<Integer, String>();
-		double ccMain = 0.6055; //ClusteringCoefficient.calculate(G);
+		double ccMain = 0.4970;//ClusteringCoefficient.calculate(G);
 
 		double d = 0.5;
 
@@ -53,7 +53,7 @@ public class RankDegreeUpdatedParallel {
 			Iterator<Entry<Integer, String>> it = seedMap.entrySet().iterator();
 			
 			// System.out.println("SeedMap size = "+s);
-			ExecutorService executor = Executors.newFixedThreadPool(40);
+			ExecutorService executor = Executors.newFixedThreadPool(4);
 			
 			while (it.hasNext()) {
 				Map.Entry<Integer, String> pair = (Map.Entry<Integer, String>) it.next();
@@ -76,7 +76,10 @@ public class RankDegreeUpdatedParallel {
 				G.removeEdge(e);
 			}
 
+			//long start = System.currentTimeMillis();
 			double ccSample = ClusteringCoefficient.calculate(sample);
+			//long end = System.currentTimeMillis();
+			//System.out.println(sample.getVertexCount()+","+(end-start));
 			if (ccSample > ccMain && d <= 0.9) {
 				d = d + 0.1;
 			}

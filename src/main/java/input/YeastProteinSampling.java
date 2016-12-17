@@ -24,13 +24,17 @@ public class YeastProteinSampling {
 		System.out.println("Graph\tCC\t\t\tTime");
 		System.out.println("Orig\t"+ccMain+"\t-");
 		
-		Graph<Integer, String> mainGraph0 = createYPGraph();
+		long start;
+		long end;
+		/*Graph<Integer, String> mainGraph0 = createYPGraph();
 		long start = System.currentTimeMillis();
-		Graph<Integer, String> sampleRD0 = RankDegree.sample(mainGraph0, 1, 0.1, 1000);
+		Graph<Integer, String> sampleRD0 = RankDegree.sample(mainGraph0, 1, 1, (int) Math.round(mainGraph0.getVertexCount()*0.5));
 		long end = System.currentTimeMillis();
 		double ccSampleRD0 = ClusteringCoefficient.calculate(sampleRD0);
 		//System.out.println("Rank Degree (0.1): "+sampleRD01.toString());
 		System.out.println("RD(0.1)\t"+ccSampleRD0+"\t"+(end-start));
+		System.out.println(sampleRD0.getVertexCount());*/
+		
 		
 		/*Graph<Integer, String> mainGraph1 = createYPGraph();
 		start = System.currentTimeMillis();
@@ -38,7 +42,7 @@ public class YeastProteinSampling {
 		end = System.currentTimeMillis();
 		double ccSampleRD01 = ClusteringCoefficient.calculate(sampleRD01);
 		//System.out.println("Rank Degree (0.1): "+sampleRD01.toString());
-		System.out.println("RD(0.5)\t"+ccSampleRD01+"\t"+(end-start));*/
+		System.out.println("RD(0.5)\t"+ccSampleRD01+"\t"+(end-start));
 		
 		Graph<Integer, String> mainGraph2 = createYPGraph();
 		start = System.currentTimeMillis();
@@ -46,17 +50,17 @@ public class YeastProteinSampling {
 		end = System.currentTimeMillis();
 		double ccSampleRD1 = ClusteringCoefficient.calculate(sampleRD1);
 		//System.out.println("Rank Degree (Max): "+sampleRD1.toString());
-		System.out.println("RD(Max)\t"+ccSampleRD1+"\t"+(end-start));
+		System.out.println("RD(Max)\t"+ccSampleRD1+"\t"+(end-start));*/
 		
 		Graph<Integer, String> mainGraph3 = createYPGraph();
 		start = System.currentTimeMillis();
-		Graph<Integer, String> sampleRDU = RankDegreeUpdated.sample(mainGraph3, 1000);
+		Graph<Integer, String> sampleRDU = RankDegreeParallel.sample(mainGraph3, 1, 0.01, (int)Math.round(mainGraph3.getVertexCount()*0.3));
 		end = System.currentTimeMillis();
 		double ccSampleRDU = ClusteringCoefficient.calculate(sampleRDU);
 		//System.out.println("Rank Degree (Max): "+sampleRD1.toString());
 		System.out.println("RDU\t"+ccSampleRDU+"\t"+(end-start));
 		
-		Graph<Integer, String> mainGraph4 = createYPGraph();
+		/*Graph<Integer, String> mainGraph4 = createYPGraph();
 		start = System.currentTimeMillis();
 		Graph<Integer, String> sampleRDP = RankDegreeParallel.sample(mainGraph4, 1, 0.1, 1000);
 		end = System.currentTimeMillis();
